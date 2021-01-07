@@ -2,6 +2,6 @@ Rails.application.routes.draw do
   resources :comments
   resources :posts
 
-  post '/contactmailer', to: 'application#email_me'
+  post '/contact', to: 'application#contact'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
