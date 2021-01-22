@@ -66,6 +66,7 @@ Rails.application.configure do
     user_name: ENV['GMAIL_USERNAME'],
     password: ENV['GMAIL_PASSWORD'],
     authentication: 'plain',
+    protocol: 'tls',
     enable_starttls_auto: true
   }
   config.action_mailer.default_url_options = { host: BASE_DOMAIN }
