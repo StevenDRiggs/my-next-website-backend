@@ -1,1 +1,1 @@
-BASE_DOMAIN = 'http://localhost:8080'
+BASE_DOMAIN = ENV['BACKEND_DOMAIN']
