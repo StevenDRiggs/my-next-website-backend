@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  # mailer methods
   def contact
     name, email, message, response = params.values_at(:name, :email, :message, :response)
 

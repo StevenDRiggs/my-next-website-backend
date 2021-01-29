@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
-  resources :commentors
+  resources :users
   resources :comments
   resources :posts
+  
+  root :posts
 
   post '/contact', to: 'application#contact'
   post 'resume', to: 'application#resume'
