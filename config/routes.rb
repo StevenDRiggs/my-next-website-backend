@@ -1,9 +1,18 @@
 Rails.application.routes.draw do
   resources :users
   resources :comments
-  resources :posts
+  resources :posts, only: [:index, :new, :create]
   
-  root :posts
+  get '/posts/:id', to: 'posts#show', id: /\d+/
+  get 'posts/:slug', to: 'posts#show'
+  get '/posts/:id/edit', to: 'posts#edit', id: /\d+/
+  get 'posts/:slug/edit', to: 'posts#edit'
+  patch '/posts/:id', to: 'posts#update', id: /\d+/
+  patch 'posts/:slug', to: 'posts#update'
+  put '/posts/:id', to: 'posts#edit', id: /\d+/
+  put 'posts/:slug', to: 'posts#edit'
+  delete '/posts/:id', to: 'posts#destroy', id: /\d+/
+  delete 'posts/:slug', to: 'posts#destroy'
 
   post '/contact', to: 'application#contact'
   post 'resume', to: 'application#resume'

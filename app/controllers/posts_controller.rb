@@ -41,9 +41,8 @@ class PostsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
-      if params[:slug].nil?
-        @post = Post.find_by(slug: params[:slug])
-      else
+      @post = Post.all.select{|post| post.slug == params[:slug]}
+      if !@post
         @post = Post.find(params[:id])
       end
     end
