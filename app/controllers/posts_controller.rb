@@ -8,7 +8,7 @@ class PostsController < ApplicationController
     render json: @posts
   end
 
-  # GET /posts/:slug
+  # GET /posts/:slug OR GET /posts/:id
   def show
     render json: @post
   end
@@ -24,7 +24,7 @@ class PostsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /posts/1
+  # PATCH/PUT /posts/:slug OR PATCH/PUT /posts/:id
   def update
     if @post.update(post_params)
       render json: @post
@@ -33,7 +33,7 @@ class PostsController < ApplicationController
     end
   end
 
-  # DELETE /posts/1
+  # DELETE /posts/:slug OR DELETE /posts/:id
   def destroy
     @post.destroy
   end
