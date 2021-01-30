@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   resources :users
-  resources :comments
-  resources :posts, only: [:index, :new, :create]
+  resources :posts, only: [:index, :new, :create] do
+    resources :comments
+  end
+  resources :comments do
+    resources :subcomments, controller: :comments
+  end
   
   get '/posts/:id', to: 'posts#show', id: /\d+/
   get 'posts/:slug', to: 'posts#show'
