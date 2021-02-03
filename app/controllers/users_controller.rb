@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
+  
+  #RESTful routes
 
   # GET /users
   def index
@@ -13,7 +15,7 @@ class UsersController < ApplicationController
     render json: @user
   end
 
-  # POST /users
+  # POST /signup
   def create
     @user = User.new(user_params)
 
@@ -37,6 +39,25 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
   end
+
+
+  # non-RESTful routes
+  def login
+    username_or_email, password = user_params.values_at(:usernameOrEmail, :password)
+
+    @user = User.find_by(username: username_or_email)
+    unless @user
+      @user = User.find_by(email: username_or_email)
+    end
+    unless @user && @user.authenticate(password)
+      #TODO errors here
+    end
+
+    render json: @user
+  end
+
+
+  # processing methods
 
   private
     # Use callbacks to share common setup or constraints between actions.

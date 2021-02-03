@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :users
+  resources :users, except: :create
+
+  post '/signup', to: 'users#create'
+  post '/login', to: 'users#login'
+
   resources :posts, only: [:index, :new, :create] do
     resources :comments
   end
