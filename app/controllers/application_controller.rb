@@ -1,4 +1,11 @@
 class ApplicationController < ActionController::API
+  include ActionController::Cookies
+  include ActionController::RequestForgeryProtection
+
+  protect_from_forgery with: :exception
+
+  before_action :set_csrf_cookie, only: [:new, :create, :edit, :update, :delete, :destroy, :login, :logout]
+
   # mailer methods
   def contact
     name, email, message, response = params.values_at(:name, :email, :message, :response)
@@ -24,5 +31,12 @@ class ApplicationController < ActionController::API
       name: name,
       email: email
     }
+  end
+
+
+  private
+
+  def set_csrf_cookie
+    cookies['CSRF_TOKEN'] = form_authenticy_token
   end
 end
