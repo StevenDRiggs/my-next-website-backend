@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      render json: @user, only: [:username, :email, :is_admin], status: :created, location: @user
+      render json: @user, only: [:id, :username, :email, :is_admin], status: :created, location: @user
     else
       render json: @user.errors.full_messages, status: :unprocessable_entity
     end
@@ -50,7 +50,7 @@ class UsersController < ApplicationController
       render json: @user.errors.full_messages, status: :unprocessable_entity
     end
 
-    render json: @user, only: [:username, :email, :is_admin]
+    render json: @user, only: [:id, :username, :email, :is_admin]
   end
 
 
