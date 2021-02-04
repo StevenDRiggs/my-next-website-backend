@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  
+
   #RESTful routes
 
   # GET /users
@@ -20,9 +20,9 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      render json: @user, status: :created, location: @user
+      render json: @user, only: [:username, :email, :is_admin], status: :created, location: @user
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: @user.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -45,28 +45,25 @@ class UsersController < ApplicationController
   def login
     username_or_email, password = user_params.values_at(:usernameOrEmail, :password)
 
-    @user = User.find_by(username: username_or_email)
-    unless @user
-      @user = User.find_by(email: username_or_email)
-    end
+    @user = User.find_by_username_or_email(username_or_email)
     unless @user && @user.authenticate(password)
-      #TODO errors here
+      render json: @user.errors.full_messages, status: :unprocessable_entity
     end
 
-    render json: @user
+    render json: @user, only: [:username, :email, :is_admin]
   end
 
 
   # processing methods
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = User.find(params[:id])
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def user_params
-      params.fetch(:user, {})
-    end
+  # Only allow a trusted parameter "white list" through.
+  def user_params
+    params.require(:user).permit([:username, :email, :password, :usernameOrEmail])
+  end
 end
