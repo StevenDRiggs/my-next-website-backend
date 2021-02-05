@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
+  before_action :authorized, only: :auto_login
 
   #RESTful routes
 
@@ -20,7 +21,16 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      render json: @user, only: [:id, :username, :email, :is_admin], status: :created, location: @user
+      token = encode_token({user_id: @user.id})
+      session[:user_id] = @user.id
+      render json: {
+        user: {
+          username: @user.username,
+          email: @user.email,
+          is_admin: @user.is_admin,
+        },
+        token: token
+      }, status: :created, location: @user
     else
       render json: @user.errors.full_messages, status: :unprocessable_entity
     end
@@ -50,7 +60,16 @@ class UsersController < ApplicationController
       render json: @user.errors.full_messages, status: :unprocessable_entity
     end
 
-    render json: @user, only: [:id, :username, :email, :is_admin]
+    session[:user_id] = @user.id
+
+    render json: {
+      user: {
+        username: @user.username,
+        email: @user.email,
+        is_admin: @user.is_admin,
+      },
+      token: token
+    }
   end
 
 

@@ -1,12 +1,12 @@
 class ApplicationController < ActionController::API
-  before_action :authorized
+  before_action :authorized, except: [:contact, :resume]
 
 
   # JWT methods
-  secret_key = Rails.application.credentials.secret_key_base
+  @@secret_key = Rails.application.credentials.secret_key_base
 
   def encode_token(payload)
-    JWT.encode(payload, secret_key)
+    JWT.encode(payload, @@secret_key)
   end
 
   def auth_header
@@ -19,7 +19,7 @@ class ApplicationController < ActionController::API
       token = auth_header.split(' ')[1]
       # header: { Authorization: 'Bearer <token>' }
       begin
-        JWT.decode(token, secret_key, true, algorithm: 'HS256')
+        JWT.decode(token, @@secret_key, true, algorithm: 'HS256')
       rescue JWT::DecodeError
         nil #TODO: add error handling here
       end
