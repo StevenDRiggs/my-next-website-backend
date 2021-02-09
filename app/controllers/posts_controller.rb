@@ -3,14 +3,14 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.all
+    @posts = Post.all.as_json
 
     render json: @posts
   end
 
   # GET /posts/:slug OR GET /posts/:id
   def show
-    render json: @post
+    render json: @post || {not_found: true}
   end
 
   # POST /posts
@@ -41,9 +41,9 @@ class PostsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
-      @post = Post.all.select{|post| post.slug == params[:slug]}
+      @post = Post.find_by_slug(params[:slug]).as_json
       if !@post
-        @post = Post.find(params[:id])
+        @post = Post.find_by(id: post_params[:id]).as_json
       end
     end
 

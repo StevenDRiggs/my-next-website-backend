@@ -5,6 +5,12 @@ class Post < ApplicationRecord
 
   has_many :comments
 
+  # class methods
+  def self.find_by_slug(slug)
+    self.all.select{|post| post.slug == slug}.first
+  end
+
+  # instance methods
   def slug
     self.title.split(/\s+/).map{|word| word.downcase}.join('-')
   end

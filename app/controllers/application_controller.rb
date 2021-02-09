@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-  before_action :authorized, except: [:contact, :resume, :index]
+  before_action :authorized, except: [:contact, :resume, :index, :show]
 
 
   # JWT methods
