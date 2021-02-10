@@ -60,6 +60,7 @@ class UsersController < ApplicationController
       render json: @user.errors.full_messages, status: :unprocessable_entity
     end
 
+    token = encode_token({user_id: @user.id})
     session[:user_id] = @user.id
 
     render json: {
@@ -70,6 +71,10 @@ class UsersController < ApplicationController
       },
       token: token
     }
+  end
+
+  def logout
+    session.destroy
   end
 
 

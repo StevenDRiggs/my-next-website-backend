@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   post '/signup', to: 'users#create'
   post '/login', to: 'users#login'
+  post '/logout', to: 'users#logout'
 
   resources :posts, only: [:index, :new, :create] do
     resources :comments
