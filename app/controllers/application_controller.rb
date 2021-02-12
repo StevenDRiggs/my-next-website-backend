@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-  before_action :authorized, except: [:contact, :resume, :index, :show]
+  before_action :authorized, except: [:contact, :resume, :index, :show, :verify_login]
 
 
   # JWT methods
@@ -39,6 +39,23 @@ class ApplicationController < ActionController::API
 
   def authorized
     render json: { message: 'Please log in' }, status: :unauthorized unless logged_in?
+  end
+
+  def verify_login
+
+    pp auth_header
+
+    if decoded_token && session[:user_id]
+      user = User.find_by(id: session[:user_id])
+
+      render json: {
+        verified: !!user && user.is_admin
+      }
+    end
+
+    render json: {
+      verified: false
+    }
   end
 
 
