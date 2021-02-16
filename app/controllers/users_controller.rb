@@ -74,7 +74,9 @@ class UsersController < ApplicationController
   end
 
   def logout
-    session.destroy
+    session.clear
+
+    render json: 'Session cleared'
   end
 
 
