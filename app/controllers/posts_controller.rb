@@ -26,6 +26,7 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/:slug OR PATCH/PUT /posts/:id
   def update
+    byebug
     if @post.update(post_params)
       render json: @post
     else
