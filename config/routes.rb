@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   post '/login', to: 'users#login'
   post '/logout', to: 'users#logout'
 
-  resources :posts, only: [:index, :new, :create] do
+  resources :posts, only: [:index, :create] do
     resources :comments
   end
   resources :comments do
@@ -13,19 +13,17 @@ Rails.application.routes.draw do
   end
   
   get '/posts/:id', to: 'posts#show', id: /\d+/
-  get 'posts/:slug', to: 'posts#show'
-  get '/posts/:id/edit', to: 'posts#edit', id: /\d+/
-  get 'posts/:slug/edit', to: 'posts#edit'
+  get '/posts/:slug', to: 'posts#show'
+
   patch '/posts/:id', to: 'posts#update', id: /\d+/
-  patch 'posts/:slug', to: 'posts#update'
-  put '/posts/:id', to: 'posts#edit', id: /\d+/
-  put 'posts/:slug', to: 'posts#edit'
+  patch '/posts/:slug', to: 'posts#update'
+
   delete '/posts/:id', to: 'posts#destroy', id: /\d+/
-  delete 'posts/:slug', to: 'posts#destroy'
+  delete '/posts/:slug', to: 'posts#destroy'
 
   post '/verifylogin', to: 'application#verify_login'
 
   post '/contact', to: 'application#contact'
-  post 'resume', to: 'application#resume'
+  post '/resume', to: 'application#resume'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
