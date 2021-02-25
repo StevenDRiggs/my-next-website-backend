@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy]
+  before_action :is_admin?, only: [:update]
 
   # GET /posts
   def index
@@ -20,7 +21,7 @@ class PostsController < ApplicationController
     if @post.save
       render json: @post, status: :created, location: @post
     else
-      render json: @post.errors, status: :unprocessable_entity
+      render json: {errors: @post.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -29,7 +30,7 @@ class PostsController < ApplicationController
     if @post.update(post_params)
       render json: @post
     else
-      render json: @post.errors, status: :unprocessable_entity
+      render json: {errors: @post.errors.full_messages}, status: :unprocessable_entity
     end
   end
 

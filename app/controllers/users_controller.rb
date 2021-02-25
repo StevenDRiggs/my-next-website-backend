@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :auto_login, except: [:set_user, :user_params]
-  before_action :set_user, only: [:show, :update, :destroy]
+  #before_action :auto_login, except: [:set_user, :user_params]
+  before_action :set_user, only: [:show, :destroy]
 
   #RESTful routes
 
@@ -44,7 +44,7 @@ class UsersController < ApplicationController
       render json: @user
     else
       render json: {
-        errors: @user.errors, status: :unprocessable_entity,
+        errors: @user.errors.full_messages, status: :unprocessable_entity,
       }
     end
   end
@@ -99,7 +99,6 @@ class UsersController < ApplicationController
     params.require(:user).permit([:username, :email, :password, :usernameOrEmail])
   end
 
-  def auto_login
-    byebug
-  end
+  #def auto_login
+  #end
 end
