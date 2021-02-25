@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-  before_action :authorized, except: [:contact, :resume, :index, :show, :verify_login]
+  #before_action :authorized, except: [:contact, :resume, :index, :show, :verify_login]
 
 
   # JWT methods
@@ -20,43 +20,41 @@ class ApplicationController < ActionController::API
       # header: { Authorization: 'Bearer <token>' }
       begin
         JWT.decode(token, @@secret_key, true, algorithm: 'HS256')
-      rescue JWT::DecodeError
-        nil #TODO: add error handling here
+      rescue JWT::DecodeError => error
+        byebug
+        render json: {error: error} and return
       end
     end
   end
 
-  def logged_in_user
-    if decoded_token
-      user_id = decoded_token[0]['user_id']
-      @user = User.find_by(id: user_id)
-    end
-  end
+#  def logged_in_user
+#    if decoded_token
+#      user_id = decoded_token[0]['user_id']
+#      @user = User.find_by(id: user_id)
+#    end
+#  end
+#
+#  def logged_in?
+#    !!logged_in_user
+#  end
+#
+#  def authorized
+#    render json: { message: 'Please log in' }, status: :unauthorized unless logged_in?
+#  end
 
-  def logged_in?
-    !!logged_in_user
-  end
-
-  def authorized
-    render json: { message: 'Please log in' }, status: :unauthorized unless logged_in?
-  end
-
-  def verify_login
-
-    pp auth_header
-
-    if decoded_token && session[:user_id]
-      user = User.find_by(id: session[:user_id])
-
-      render json: {
-        verified: !!user && user.is_admin
-      }
-    end
-
-    render json: {
-      verified: false
-    }
-  end
+#  def verify_login
+#    if decoded_token && session[:user_id]
+#      user = User.find_by(id: session[:user_id])
+#
+#      render json: {
+#        verified: !!user && user.is_admin
+#      }
+#    end
+#
+#    render json: {
+#      verified: false
+#    }
+#  end
 
 
   # mailer methods

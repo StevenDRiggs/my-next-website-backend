@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
+  before_action :auto_login, except: [:set_user, :user_params]
   before_action :set_user, only: [:show, :update, :destroy]
-  before_action :authorized, only: :auto_login
 
   #RESTful routes
 
@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     render json: @users
   end
 
-  # GET /users/1
+  # GET /users/:id
   def show
     render json: @user
   end
@@ -29,10 +29,12 @@ class UsersController < ApplicationController
           email: @user.email,
           is_admin: @user.is_admin,
         },
-        token: token
+        token: token,
       }, status: :created, location: @user
     else
-      render json: @user.errors.full_messages, status: :unprocessable_entity
+      render json: {
+        errors: @user.errors.full_messages, status: :unprocessable_entity,
+      }
     end
   end
 
@@ -41,11 +43,13 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       render json: @user
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: {
+        errors: @user.errors, status: :unprocessable_entity,
+      }
     end
   end
 
-  # DELETE /users/1
+  # DELETE /users/:id
   def destroy
     @user.destroy
   end
@@ -57,7 +61,9 @@ class UsersController < ApplicationController
 
     @user = User.find_by_username_or_email(username_or_email)
     unless @user && @user.authenticate(password)
-      render json: @user.errors.full_messages, status: :unprocessable_entity
+      render json: {
+        errors: @user.errors.full_messages, status: :unprocessable_entity,
+      } and return
     end
 
     token = encode_token({user_id: @user.id})
@@ -69,7 +75,7 @@ class UsersController < ApplicationController
         email: @user.email,
         is_admin: @user.is_admin,
       },
-      token: token
+      token: token,
     }
   end
 
@@ -85,11 +91,15 @@ class UsersController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_user
-    @user = User.find(params[:id])
+    @user = User.find(session[:user_id])
   end
 
   # Only allow a trusted parameter "white list" through.
   def user_params
     params.require(:user).permit([:username, :email, :password, :usernameOrEmail])
+  end
+
+  def auto_login
+    byebug
   end
 end

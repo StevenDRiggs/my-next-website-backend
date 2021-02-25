@@ -26,7 +26,6 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/:slug OR PATCH/PUT /posts/:id
   def update
-    byebug
     if @post.update(post_params)
       render json: @post
     else
@@ -50,6 +49,6 @@ class PostsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def post_params
-      params.fetch(:post, {})
+      params.require(:post).permit([:title, :content, :slug])
     end
 end
