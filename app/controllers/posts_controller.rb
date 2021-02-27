@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy]
-  before_action :is_admin?, only: [:update]
+  before_action :is_admin?, only: [:update, :destroy]
 
   # GET /posts
   def index
@@ -40,6 +40,8 @@ class PostsController < ApplicationController
   # DELETE /posts/:slug OR DELETE /posts/:id
   def destroy
     @post.destroy
+
+    render json: Post.all.as_json
   end
 
   private
