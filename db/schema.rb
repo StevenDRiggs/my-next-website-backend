@@ -10,32 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_11_041543) do
+ActiveRecord::Schema.define(version: 2021_01_30_200237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "commentors", force: :cascade do |t|
-    t.string "password_digest"
-    t.text "liked_posts"
-    t.string "avatar_url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "comments", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "post_id"
+    t.text "content"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "commentor_id"
-    t.text "content"
-    t.integer "likes"
+    t.integer "commented_on_id"
   end
 
   create_table "posts", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.string "title"
     t.text "content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "username", null: false
+    t.string "password_digest", null: false
+    t.string "avatar_url"
+    t.boolean "is_admin", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "email", null: false
+    t.text "flags"
   end
 
 end

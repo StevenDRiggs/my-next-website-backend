@@ -8,7 +8,7 @@ class CommentsController < ApplicationController
     render json: @comments
   end
 
-  # GET /comments/1
+  # GET /comments/:id
   def show
     render json: @comment
   end
@@ -24,7 +24,7 @@ class CommentsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /comments/1
+  # PATCH/PUT /comments/:id
   def update
     if @comment.update(comment_params)
       render json: @comment
@@ -33,7 +33,7 @@ class CommentsController < ApplicationController
     end
   end
 
-  # DELETE /comments/1
+  # DELETE /comments/:id
   def destroy
     @comment.destroy
   end

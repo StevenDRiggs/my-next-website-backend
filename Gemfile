@@ -3,6 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.5.7'
 
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 # Use postgresql as the database for Active Record
@@ -16,6 +17,9 @@ gem 'puma', '~> 4.1'
 # Use Active Model has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
+# cardinalblue's profanity filter
+gem 'profanity-filter', '~> 1.0'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
@@ -25,9 +29,18 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
+# Use JSON Web Tokens for secure user persistence
+gem 'jwt'
+
 group :development, :test do
+  # load environment variables from .env
+  gem 'dotenv-rails'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw, :ruby]
+  # for when byebug doesn't work
+  gem 'pry'
+  # generate fake data for testing 
+  gem 'faker', '~> 2.15', '>= 2.15.1'
 end
 
 group :development do
