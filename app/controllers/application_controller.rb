@@ -23,9 +23,7 @@ class ApplicationController < ActionController::API
   def verify_login
     if decoded_token
       user_id = decoded_token[0]['user_id']
-      if user_id == session[:user_id]
-        @user = User.find_by(id: user_id)
-      end
+      @user = User.find_by(id: user_id)
     end
   end
 
@@ -48,7 +46,7 @@ class ApplicationController < ActionController::API
       email: email,
       response: response
     }
-    
+
   end
 
   def resume

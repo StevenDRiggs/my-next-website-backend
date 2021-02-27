@@ -27,8 +27,11 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/:slug OR PATCH/PUT /posts/:id
   def update
-    if @post.update(post_params)
-      render json: @post
+    if @post.update({
+        title: post_params[:title],
+        content: post_params[:content],
+    })
+      render json: Post.all.as_json
     else
       render json: {errors: @post.errors.full_messages}, status: :unprocessable_entity
     end
@@ -42,10 +45,7 @@ class PostsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
-      @post = Post.find_by_slug(params[:slug]).as_json
-      if !@post
-        @post = Post.find_by(id: post_params[:id]).as_json
-      end
+      @post = Post.find_by_slug(params[:slug])
     end
 
     # Only allow a trusted parameter "white list" through.
