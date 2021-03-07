@@ -1,0 +1,19 @@
+{
+    "name": "my-next-website-backend",
+    "version": "1.0.0",
+    "description": "Rails API for my-next-website",
+    "main": "index.js",
+    "repository": "git@github.com:StevenDRiggs/my-next-website-backend.git",
+    "author": "StevenDRiggs <sfriggs21@gmail.com>",
+    "license": "GPL-3.0-or-later",
+    "scripts": {
+        "build": "cd client && yarn install && yarn build && cd ..",
+        "deploy": "cp -a client/build/. public/",
+        "postinstall": "yarn build && yarn deploy && echo 'Client built!'"
+    },
+    "engines": {
+        "yarn": "1.22.10",
+        "npm": "6.14.11",
+        "node": "15.5.1"
+    }
+}
