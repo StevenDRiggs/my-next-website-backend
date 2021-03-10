@@ -12,7 +12,7 @@ class Post < ApplicationRecord
 
   # instance methods
   def slug
-    self.title.gsub(/\s+/, '-').gsub('_', '-').gsub(/[^A-za-z0-9-]/, '').downcase
+    self.title.gsub(/\s+/, '-').gsub('_', '-').gsub(/[^A-Za-z0-9-]/, '').downcase
   end
 
   def attributes
