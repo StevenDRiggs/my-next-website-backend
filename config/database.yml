@@ -82,5 +82,5 @@ test:
 production:
   <<: *default
   database: my-next-website-backend_production
-  username: my-next-website-backend
-  password: <%= ENV['MY_NEXT_WEBSITE_DATABASE_PASSWORD'] %>
+  #username: my-next-website-backend
+  #password: <%= ENV['MY_NEXT_WEBSITE_DATABASE_PASSWORD'] %>
